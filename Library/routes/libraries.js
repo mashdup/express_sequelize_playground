@@ -3,14 +3,16 @@ var express = require('express');
 var router = express.Router();
 
 
-var getLibraries = new Promise(function(resolve, reject) {
-    return Library.findAll().then( libraries => {
-        resolve(libraries);
-    }).catch(err => {
-        console.error('failed to get libraries :', err);
-        reject('failed to get libraries');
+var getLibraries = function () {
+    return new Promise(function(resolve, reject) {
+        return Library.findAll().then( libraries => {
+            resolve(libraries);
+        }).catch(err => {
+            console.error('failed to get libraries :', err);
+            reject('failed to get libraries');
+        });
     });
-});
+};
 
 var addLibrary = function (libraryToAdd) {
     return new Promise(function(resolve, reject) {
@@ -24,8 +26,10 @@ var addLibrary = function (libraryToAdd) {
 };
 
 router.get('/', function(req, res, next) {
-    getLibraries.then(function(data) {
+    getLibraries().then( data => {
         res.json(data);
+    }).catch(err => {
+        res.status(500).send(err);
     });
 });
 
@@ -39,7 +43,6 @@ router.post('/',function(req,res,next){
     } else {
         res.status(400).send('This is not JSON');
     }
-    console.log(req.body);
 });
 
 router.get('/:id', function(req,res,next) {
