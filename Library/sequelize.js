@@ -4,8 +4,7 @@ const sequelize = new Sequelize({
     storage: './library.db'
   });
 
-const LibraryModel = require('./models/library');
-const Library = LibraryModel(sequelize, Sequelize);
+const Library = require('./models/library')(sequelize, Sequelize);
 
 sequelize.sync({force : false})
     .then(() => {
