@@ -4,7 +4,7 @@ var router = express.Router();
 
 //GET ALL
 router.get('/', (req, res, next) => {
-    Library.findAll()
+    Library.findAll(req.query)
         .then(libraries => res.json(libraries))
         .catch(next);
 });
@@ -25,7 +25,6 @@ router.param('library', (req, res, next, libraryId) => {
 
 //CREATE
 router.post('/', (req, res, next) => {
-    const fields = ['name'];
     Library.create(req.body)
         .then(library => res.location(`${req.baseUrl}/${library.id}`).json(library))
         .catch(next);
@@ -44,12 +43,8 @@ router.get('/:library', (req, res, next) => {
 router.put('/:library', (req, res, next) => {
     if (req.library != null) {
         req.library.update(req.body)
-            .then( updated => {
-                res.send(true);
-            })
-            .catch( err => {
-                res.status(500).end();
-            });
+            .then( updated => res.send(true))
+            .catch( err => res.status(500).end());
     } else {
         res.status(404).end();
     }
@@ -59,12 +54,8 @@ router.put('/:library', (req, res, next) => {
 router.delete('/:library', (req, res, next) => {
     if (req.library != null) {
         req.library.destroy()
-            .then( deleted => {
-                res.send(true);
-            })
-            .catch( err => {
-                res.status(500).end();
-            });
+            .then( deleted => res.send(true))
+            .catch( err => res.status(500).end());
     } else {
         res.status(404).end();
     }

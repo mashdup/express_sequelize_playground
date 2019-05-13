@@ -5,12 +5,18 @@ const sequelize = new Sequelize({
   });
 
 const Library = require('./models/library')(sequelize, Sequelize);
+const Book = require('./models/book')(sequelize, Sequelize);
+const User = require('./models/user')(sequelize, Sequelize);
 
-sequelize.sync({force : false})
+Book.belongsTo(Library);
+
+sequelize.sync({force : false, alter : false})
     .then(() => {
         console.log('database sync');
     });
 
 module.exports = {
-    Library
+    Library,
+    Book,
+    User
 };
