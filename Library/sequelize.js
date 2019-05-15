@@ -9,6 +9,7 @@ const Book = require('./models/book')(sequelize, Sequelize);
 const User = require('./models/user')(sequelize, Sequelize);
 
 Book.belongsTo(Library);
+Book.belongsTo(User);
 
 sequelize.sync({force : false, alter : false})
     .then(() => {
