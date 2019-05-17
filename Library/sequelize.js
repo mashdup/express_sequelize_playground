@@ -11,7 +11,7 @@ const User = require('./models/user')(sequelize, Sequelize);
 Book.belongsTo(Library);
 Book.belongsTo(User);
 
-sequelize.sync({force : false, alter : false})
+sequelize.sync({force : false, alter : true})
     .then(() => {
         console.log('database sync');
     });

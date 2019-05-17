@@ -29,6 +29,10 @@ router.get('/', (req, res, next) => {
         {
             model: Library,
             required: false
+        },
+        {
+            model: User,
+            required: false
         }
     ];
     Book.findAll(query)
